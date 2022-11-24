@@ -6,7 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "c03eca5aeb644cdda95aa138c297ed5c"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+</script>
   <style>
     button {
       margin: 3px;
@@ -87,7 +93,17 @@
     </section>
   </main>
 
+                        
   <script>
+class ValidationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "ValidationError";
+  }
+}
+window.addEventListener('error', e => {
+  console.log("Some Error");
+})
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +111,81 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (error) {
+          console.log("There is an error");
+          throw new ValidationError("Wrong Syntax");
+        //  console.log(error);
+          //output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      finally{
+        console.log("Runs all the time");
+      }
+    
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    let eButtons = document.querySelectorAll("#error-btns > button");
+    eButtons[0].addEventListener('click', ()=>{ 
+      console.log("Console Log Demo");
+      console.log(eButtons[1]);
+    });
+    eButtons[1].addEventListener('click', ()=>{ 
+      console.error("Console Error Demo");
+    });
+    eButtons[2].addEventListener('click', ()=>{ 
+      console.count("Console Count Demo");
+    });
+    eButtons[3].addEventListener('click', ()=>{ 
+      console.warn("Console Warn Demo");
+    });
+    var number = 2;
+    eButtons[4].addEventListener('click', ()=>{ 
+      const myObj = {number,errorMsg:"This number does not equals 3"};
+      console.assert(number==3 ,myObj);
+    });
+    eButtons[5].addEventListener('click', ()=>{ 
+      console.clear();
+    });
+    eButtons[6].addEventListener('click', ()=>{ 
+      console.dir(eButtons[6]);
+    });
+    eButtons[7].addEventListener('click', ()=>{ 
+      console.dirxml(eButtons[7]);
+    });
+    eButtons[8].addEventListener('click', ()=>{ 
+      console.group();
+    });
+    eButtons[9].addEventListener('click', ()=>{ 
+      console.groupEnd();
+    });
+    eButtons[10].addEventListener('click', ()=>{ 
+      function Person(name, num) {
+        this.name = name;
+        this.num = num;
+      }
+    const software = new Person("Software Engineering", "110");
+    const language = new Person("Programming Language", "130");
+    const advanced = new Person("Advanced Software", "112");
+      console.table([software,language,advanced]);
+    });
+    eButtons[11].addEventListener('click', ()=>{ 
+      console.time();
+    }); 
+    eButtons[12].addEventListener('click', ()=>{ 
+      console.timeEnd();
+    });
+    eButtons[13].addEventListener('click', ()=>{ 
+      console.trace();
+    });
+    eButtons[14].addEventListener('click', () => {
+      function1();
+    })
   </script>
 </body>
 
